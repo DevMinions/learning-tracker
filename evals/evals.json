@@ -1,0 +1,23 @@
+{
+  "skill_name": "learning-tracker",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我制定一个学习算法工程师的计划，3个月时间，每天2小时",
+      "expected_output": "创建学习计划，包含任务列表、时间安排",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我今天看了3Blue1Brown的线性代数视频，学了矩阵乘法，用了45分钟",
+      "expected_output": "记录打卡，更新进度，给予反馈",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "查看我的学习进度",
+      "expected_output": "显示学习报告，包含总学习时间、任务完成情况",
+      "files": []
+    }
+  ]
+}
