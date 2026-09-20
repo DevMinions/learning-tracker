@@ -1,0 +1,238 @@
+<title>__TITLE__</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f6f5; --surface:#ffffff; --surface-2:#e9efed; --border:#dce4e2;
+  --ink:#101d1c; --ink-2:#4b5f5d; --ink-3:#7f9391;
+  --accent:#0d6b66; --accent-soft:#dcefed; --accent-line:#0d6b66;
+  --good:#2d7a55; --warn:#a75c0d; --todo:#b3c1bf;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1413; --surface:#131e1d; --surface-2:#1a2726; --border:#263635;
+  --ink:#e4eeec; --ink-2:#a1b5b2; --ink-3:#6d8280;
+  --accent:#4ec4bb; --accent-soft:#143230; --accent-line:#4ec4bb;
+  --good:#58b887; --warn:#d59a52; --todo:#3a4a49;
+}}
+:root[data-theme="dark"]{
+  --bg:#0c1413; --surface:#131e1d; --surface-2:#1a2726; --border:#263635;
+  --ink:#e4eeec; --ink-2:#a1b5b2; --ink-3:#6d8280;
+  --accent:#4ec4bb; --accent-soft:#143230; --accent-line:#4ec4bb;
+  --good:#58b887; --warn:#d59a52; --todo:#3a4a49;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;margin:0}
+.wrap{max-width:880px;margin:0 auto;padding-block:40px 64px;padding-left:20px;padding-right:20px}
+h1,h2,h3{text-wrap:balance;margin:0;font-weight:600;letter-spacing:-.01em}
+h1{font-size:1.65rem;line-height:1.25}
+h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);font-weight:600}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:baseline;justify-content:space-between;
+  padding-bottom:20px;border-bottom:1px solid var(--border)}
+.meta{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);display:flex;gap:16px;flex-wrap:wrap}
+
+section{margin-top:40px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:14px}
+
+/* 唯一被抬起的块：现在做什么 */
+.now{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent-line);
+  border-radius:3px;padding:22px 24px;margin-top:28px}
+.now .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.now h3{font-size:1.28rem;margin:6px 0 0}
+.dod{margin-top:16px;padding:12px 14px;background:var(--surface-2);border-radius:3px;font-size:.92rem}
+.dod b{color:var(--accent);font-weight:600;font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;
+  display:block;margin-bottom:4px;font-family:var(--mono)}
+.mats{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:7px;font-size:.9rem}
+.mats li{display:flex;gap:9px;align-items:flex-start}
+.mats .dot{color:var(--ink-3);font-family:var(--mono);flex:none;padding-top:1px}
+.unver{font-size:.72rem;color:var(--warn);font-family:var(--mono);white-space:nowrap}
+
+.strip{display:flex;gap:12px;align-items:center;margin-top:16px;padding:13px 16px;border-radius:3px;font-size:.9rem;
+  background:var(--surface);border:1px solid var(--border)}
+.strip.due{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.strip .n{font-family:var(--mono);font-weight:600;font-size:1.05rem;color:var(--accent)}
+
+/* 任务列表：发丝线，不是卡片 */
+.tasks{border-top:1px solid var(--border)}
+.task{border-bottom:1px solid var(--border);padding:15px 0}
+.task-top{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.tid{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);flex:none}
+.tname{font-weight:500;flex:1;min-width:160px}
+.thours{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--surface-2);border-radius:2px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px;background:var(--accent)}
+.task.done .bar i{background:var(--good)}
+.task-dod{font-size:.85rem;color:var(--ink-2);margin-top:9px;padding-left:14px;border-left:2px solid var(--border)}
+.pill{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;padding:2px 7px;border-radius:2px;flex:none;
+  text-transform:uppercase}
+.pill.now-p{background:var(--accent);color:var(--surface)}
+.pill.done-p{background:transparent;color:var(--good);border:1px solid var(--good)}
+.pill.todo-p{background:transparent;color:var(--ink-3);border:1px solid var(--border)}
+
+/* 路线：竖直 rail */
+.rail{list-style:none;margin:0;padding:0;position:relative}
+.rail::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:1px;background:var(--border)}
+.ph{position:relative;padding:11px 0 11px 26px}
+.ph::before{content:"";position:absolute;left:0;top:18px;width:11px;height:11px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--todo)}
+.ph.cur::before{border-color:var(--accent);background:var(--accent)}
+.ph.past::before{border-color:var(--good);background:var(--good)}
+.ph-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ph-key{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);font-weight:500}
+.ph.cur .ph-key{color:var(--accent)}
+.ph-name{font-weight:500}
+.ph-h{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);margin-left:auto}
+.ph-d{font-size:.85rem;color:var(--ink-2);margin-top:2px}
+.ph-probe{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-top:3px}
+
+/* 14 天打卡 */
+.days{display:flex;gap:3px;align-items:flex-end;height:54px;margin-top:6px}
+.day{flex:1;background:var(--surface-2);border-radius:2px 2px 0 0;min-height:3px;position:relative}
+.day[data-m]:not([data-m="0"]){background:var(--accent)}
+.dayax{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.7rem;color:var(--ink-3);margin-top:6px}
+.empty{font-size:.85rem;color:var(--ink-3);margin-top:10px}
+
+.shaky{list-style:none;padding:0;margin:0}
+.shaky li{padding:10px 0;border-bottom:1px solid var(--border);font-size:.9rem;display:flex;gap:10px}
+.shaky .cnt{font-family:var(--mono);font-size:.76rem;color:var(--warn);flex:none}
+
+footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--border);
+  font-family:var(--mono);font-size:.74rem;color:var(--ink-3);line-height:1.8}
+.note{font-size:.85rem;color:var(--ink-2);margin-top:12px;padding-left:12px;border-left:2px solid var(--border)}
+@media (max-width:520px){h1{font-size:1.35rem}.now{padding:18px 16px}.ph-h{margin-left:0;width:100%}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="goal"></h1>
+      <div class="meta" id="range"></div>
+    </div>
+  </header>
+
+  <div class="now">
+    <div class="eyebrow">现在做这个</div>
+    <h3 id="now-name"></h3>
+    <div class="meta" style="margin-top:8px" id="now-meta"></div>
+    <div class="dod" id="now-dod" hidden><b>做到这个才算完成</b><span id="now-dod-t"></span></div>
+    <ul class="mats" id="now-mats"></ul>
+  </div>
+
+  <div class="strip" id="review"></div>
+
+  <section>
+    <div class="sec-head"><h2>当前阶段的任务</h2><span class="thours" id="task-sum"></span></div>
+    <div class="tasks" id="tasks"></div>
+  </section>
+
+  <section id="shaky-sec" hidden>
+    <div class="sec-head"><h2>反复答错 · 这些才是真缺口</h2></div>
+    <ul class="shaky" id="shaky"></ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>最近 14 天</h2><span class="thours" id="days-sum"></span></div>
+    <div class="days" id="days"></div>
+    <div class="dayax"><span id="d-from"></span><span id="d-to">今天</span></div>
+    <div class="empty" id="days-empty" hidden>还没有打卡记录。学完第一段就 <span class="mono">checkin</span>，这里会长出来。</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>全程路线</h2><span class="thours" id="ph-sum"></span></div>
+    <ul class="rail" id="rail"></ul>
+    <div class="note" id="note"></div>
+  </section>
+
+  <footer>
+    数据源：本地 <span class="mono">.learning/</span>（plan.json + checkins/ + reviews.json）<br>
+    生成于 <span id="gen"></span> · 这是只读快照，想看最新的让 Claude 重新发布一次
+  </footer>
+</div>
+
+<script>
+const DATA = __DATA__;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+$("goal").textContent = DATA.goal;
+$("range").innerHTML = `<span>${esc(DATA.start_date)} → ${esc(DATA.end_date)}</span>
+  <span>每日 ${DATA.daily_hours}h</span>
+  <span>累计 ${DATA.stats.total_hours.toFixed(1)}h</span>
+  <span>连续 ${DATA.stats.streak} 天</span>`;
+
+// 现在做什么
+const n = DATA.next;
+if (n) {
+  $("now-name").textContent = n.name;
+  $("now-meta").innerHTML = `<span>${esc(n.id)}</span><span>已投入 ${n.hours.toFixed(1)} / ${n.estimated_hours}h</span>`;
+  if (n.dod) { $("now-dod").hidden = false; $("now-dod-t").textContent = n.dod; }
+  $("now-mats").innerHTML = (n.materials || []).map(m =>
+    `<li><span class="dot">→</span><span><a href="${esc(m.u)}" target="_blank" rel="noopener">${esc(m.n)}</a>${
+      m.v ? "" : ' <span class="unver">链接未逐一确认</span>'}</span></li>`).join("");
+} else {
+  $("now-name").textContent = "全部任务已完成";
+  $("now-meta").textContent = "该重估下一阶段了。";
+}
+
+// 复习
+const s = DATA.stats, rv = $("review");
+if (s.due > 0) {
+  rv.className = "strip due";
+  rv.innerHTML = `<span class="n">${s.due}</span><span>道题到期待复习 —— 先复习，再学新的。跟 Claude 说「考我」。</span>`;
+} else if (s.items > 0) {
+  rv.innerHTML = `<span class="n">${s.mastered}/${s.items}</span><span>题已掌握，暂无到期。</span>`;
+} else {
+  rv.innerHTML = `<span class="n">0</span><span>道复习题。学完一段就让 Claude 出题——只记时长，这就退化成计时器了。</span>`;
+}
+
+// 任务
+$("tasks").innerHTML = DATA.tasks.map(t => {
+  const cur = n && t.id === n.id;
+  const pill = t.done ? '<span class="pill done-p">完成</span>'
+    : cur ? '<span class="pill now-p">进行中</span>' : '<span class="pill todo-p">未开始</span>';
+  return `<div class="task${t.done ? " done" : ""}">
+    <div class="task-top"><span class="tid">${esc(t.id)}</span><span class="tname">${esc(t.name)}</span>
+      ${pill}<span class="thours">${t.hours.toFixed(1)}/${t.estimated_hours}h</span></div>
+    <div class="bar"><i style="width:${t.pct}%"></i></div>
+    ${t.dod ? `<div class="task-dod">${esc(t.dod)}</div>` : ""}</div>`;
+}).join("");
+const doneN = DATA.tasks.filter(t => t.done).length;
+$("task-sum").textContent = `${doneN}/${DATA.tasks.length} 完成`;
+
+// 反复答错
+if (s.shaky && s.shaky.length) {
+  $("shaky-sec").hidden = false;
+  $("shaky").innerHTML = s.shaky.map(i =>
+    `<li><span class="cnt">错 ${i.fails} 次</span><span>${esc(i.q)}</span></li>`).join("");
+}
+
+// 14 天
+const max = Math.max(1, ...DATA.daily.map(d => d.minutes));
+$("days").innerHTML = DATA.daily.map(d =>
+  `<div class="day" data-m="${d.minutes}" style="height:${Math.max(3, d.minutes / max * 54)}px"
+     title="${esc(d.date)} · ${d.minutes} 分钟"></div>`).join("");
+$("d-from").textContent = DATA.daily[0].date;
+const tot = DATA.daily.reduce((a, d) => a + d.minutes, 0);
+$("days-sum").textContent = `${(tot / 60).toFixed(1)}h`;
+if (tot === 0) $("days-empty").hidden = false;
+
+// 路线
+let seen = false;
+$("rail").innerHTML = DATA.phases.map(p => {
+  const cur = p.key === DATA.current_phase;
+  const cls = cur ? "cur" : (seen ? "" : "past");
+  if (cur) seen = true;
+  return `<li class="ph ${cls}"><div class="ph-top"><span class="ph-key">${esc(p.key)}</span>
+      <span class="ph-name">${esc(p.name)}</span><span class="ph-h">${p.hours}h</span></div>
+    <div class="ph-d">${esc(p.detail)}</div>
+    ${p.probes ? `<div class="ph-probe">对应诊断题 ${esc(p.probes)}</div>` : ""}</li>`;
+}).join("");
+$("ph-sum").textContent = DATA.phases.reduce((a, p) => a + p.hours, 0) + "h 总计";
+$("note").textContent = DATA.note || "";
+$("gen").textContent = DATA.generated_at;
+</script>
