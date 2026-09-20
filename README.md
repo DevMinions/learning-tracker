@@ -12,11 +12,8 @@
 ## 安装
 
 ```bash
-# 克隆到本地
-git clone https://github.com/your-username/learning-tracker.git
-
-# 复制到技能目录
-cp -r learning-tracker ~/.agents/skills/
+git clone https://github.com/DevMinions/learning-tracker.git ~/.claude/skills/learning-tracker
+python3 ~/.claude/skills/learning-tracker/scripts/tracker.py selftest
 ```
 
 ## 使用方式
@@ -45,11 +42,11 @@ cp -r learning-tracker ~/.agents/skills/
 
 ```
 .learning/
-├── plan.json           # 学习计划
-├── progress.json       # 进度数据
-├── checkins/           # 打卡记录
-│   └── YYYY-MM-DD.json
-└── reports/            # 生成的报告
+├── plan.json           # 目标 + 任务列表（唯一手写状态）
+└── checkins/           # 打卡流水，只追加
+    └── YYYY-MM-DD.json
+
+总时长 / 连续打卡 / 完成度均由 checkins 实时推导，不落盘。
 ```
 
 ## 技能结构
@@ -66,27 +63,11 @@ learning-tracker/
 
 ## 示例
 
-### 创建计划
-
-```python
-from tracker import LearningTracker
-
-tracker = LearningTracker()
-tracker.init_plan("成为算法工程师", "2026-09-19", "2026-12-31", 2)
-tracker.add_task("线性代数基础", 10)
-tracker.add_task("Python编程", 15)
-```
-
-### 打卡记录
-
-```python
-tracker.checkin("task-1", "看了矩阵乘法视频", 45, completed=True)
-```
-
-### 查看进度
-
-```python
-print(tracker.generate_report())
+```bash
+python3 scripts/tracker.py init "成为算法工程师" 2026-09-19 2026-12-31 2
+python3 scripts/tracker.py add "线性代数基础" 10
+python3 scripts/tracker.py checkin task-1 "看了矩阵乘法视频" 45 --done
+python3 scripts/tracker.py report
 ```
 
 ## 许可证
